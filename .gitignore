@@ -1,0 +1,16 @@
+# OS dependent cache files
+.DS_Store
+Thumb.db
+
+# IDE dependent configuration file
+.idea
+.vs_code
+
+# runtime dependent file
+package-lock.json
+node_modules
+
+# miscellaneous
+.ig.*
+
+
