@@ -6,8 +6,8 @@ export const _ContentType = Object.freeze({
 })
   
 export const _Version = Object.freeze({
-    MAJOR   :   3,
-    MINOR   :   5
+    MAJOR              :   3,
+    MINOR              :   5
 })
 
 export const _Handshake = Object.freeze({
