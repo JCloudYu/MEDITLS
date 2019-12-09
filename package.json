@@ -1,29 +1,32 @@
 {
-	"name": "meditls",
-	"version": "0.0.2",
-	"description": "A tls module designed to be attached on to different stream sources",
-	"main": "_.js",
-	"scripts": {},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/JCloudYu/MEDITLS.git"
-	},
-	"keywords": [
-		"MEDICAL",
-		"MEDITLS",
-		"TLS"
-	],
-	"author": "JCloudYu <j.cloud.yu@gmail.com> (https://github.com/JCloudYu)",
-	"contributors": [
-		"JCloudYu <j.cloud.yu@gmail.com> (https://github.com/JCloudYu)"
-	],
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/JCloudYu/MEDITLS/issues"
-	},
-	"homepage": "https://github.com/JCloudYu/MEDITLS#readme",
-	"dependencies": {
-		"beson": "^2.2.1",
-		"extes": "^2.1.2"
-	}
+  "name": "meditls",
+  "version": "0.0.2",
+  "description": "A tls module designed to be attached on to different stream sources",
+  "main": "_.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JCloudYu/MEDITLS.git"
+  },
+  "keywords": [
+    "MEDICAL",
+    "MEDITLS",
+    "TLS"
+  ],
+  "author": "JCloudYu <j.cloud.yu@gmail.com> (https://github.com/JCloudYu)",
+  "contributors": [
+    "JCloudYu <j.cloud.yu@gmail.com> (https://github.com/JCloudYu)",
+    "Cheny-chen <linux.experts111@gmail.com> (https://github.com/Cheny-chen)"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JCloudYu/MEDITLS/issues"
+  },
+  "homepage": "https://github.com/JCloudYu/MEDITLS#readme",
+  "dependencies": {
+    "beson": "^2.2.1",
+    "extes": "^2.1.2",
+    "ws": "^7.2.0"
+  },
+  "devDependencies": {}
 }
