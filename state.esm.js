@@ -3,7 +3,7 @@
 import { EventEmitter } from  'events';
 import { BitwiseCompareBE } from 'beson/helper.esm.js';
 import { Serialize } from 'beson/serialize.esm.js';
-import { _ContentType, _Version, _Handshake } from './recordProtocolFormat.esm.js';
+import { _ContentType, _Version, _Handshake } from './lib/__RrecordProtocolFormat.esm.js/index.js.js.js';
 
 
 class _StateMachine {
