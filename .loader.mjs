@@ -72,7 +72,7 @@ export function resolve(specifier, parentModuleURL, defaultResolve) {
 		 * We don't need to detect the leading C:/ in windows env here...
 		 * It has been processed to /C:/Users/XXX/Desktop/xxx.mjs already...awkward = =+
 		**/
-		const _MAIN_MODULE_PATH = PATHS[1] = `file://${specifier}`;
+		const _MAIN_MODULE_PATH = PATHS[1] = specifier.lastIndexOf('file://'===0) ? `${specifier}` : `file://${specifier}`;		
 		const DIVIDER_POS = _MAIN_MODULE_PATH.lastIndexOf('/')+1;
 		PATHS[0] = _MAIN_MODULE_PATH.substring(0, DIVIDER_POS);
 		specifier = `./${_MAIN_MODULE_PATH.substring(DIVIDER_POS)}`;
