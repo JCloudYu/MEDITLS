@@ -164,7 +164,9 @@ __CLIENT_FSM.register(Object.keys(__CLIENT_FSM_FLow)[0], function(...args){
 
 console.log( "run1" );
 __CLIENT_FSM.run('run1', function name(params) {
-	console.log('hi');
+	this._name = "Cloud";
+	console.log("Initial State", this.prev_state, this.state_data, args);
+	this.push_state('a', {a:1,b:2,c:3});
 	
 });
 
