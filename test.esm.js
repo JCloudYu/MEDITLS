@@ -24,7 +24,9 @@ class _StateMachine {
 		
     	this._state_map[key] = processor;
     }
-    push_state(state_key, state_data) {
+    push_state(state_key, state_data, ...args) {
+		console.log('push_state ====>', args);
+		
     	this._prev_state = this._state;
 		this._state = state_key;
 		this._state_data = state_data;
