@@ -26,6 +26,7 @@
   "dependencies": {
     "beson": "^2.2.1",
     "extes": "^2.1.2",
+    "jsboost": "^2.10.8",
     "ws": "^7.2.0"
   },
   "devDependencies": {}
