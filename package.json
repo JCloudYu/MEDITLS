@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/JCloudYu/MEDITLS#readme",
   "dependencies": {
-    "beson": "^2.2.1",
+    "beson": "^2.3.1",
     "extes": "^2.1.2",
     "jsboost": "^2.10.8",
     "ws": "^7.2.0"
