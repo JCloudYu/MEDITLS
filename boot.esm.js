@@ -25,18 +25,26 @@ import { MEDIISCI } from "./lib/MEDIISCI.esm.js"
 
     const __Client = await MEDIISCI.Init(write_Stream);
     console.log('Client Init: ', __Client.state );    
-    const client_hello = await __Client.Client_Hello(write_Stream);
-    console.log('Client Hello:', client_hello );
+    let client_resp = await __Client.Client_Hello(write_Stream);
+    console.log('Client Response:', {client_resp, state:__Client.state} );
 
 
     
 
     const __Server = await MEDIISCI.Init(write_Stream);
     console.log('Server Init:', __Server );
-    const server_hello = await __Server.Server_Hello(client_hello, write_Stream);
-    console.log('Server Hello:', server_hello );
+    let server_resp = await __Server.Server_Hello(client_resp, write_Stream);
+    console.log('Server Response:', {server_resp, state:__Server.state} );
     
+    
+   
+    client_resp = await __Client.Client_Send_publicKey(server_resp, write_Stream);
+    console.log('Client Response:', client_resp, __Client.state );
 
+
+    server_resp = await __Server.Server_Send_publicKey(client_resp, write_Stream);
+    console.log('Server Response:', {server_resp, state:__Server.state} );
+    
 
 })();
 
