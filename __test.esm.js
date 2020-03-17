@@ -1,63 +1,116 @@
-import { createHash, createECDH } from 'crypto';
+import fs from 'fs';
+import { createHash, createECDH, createSign } from 'crypto';
 import { Beson, Serializer } from "beson/beson.esm.js";
 import { UniqueId } from "jsboost/unique-id.esm.js";
+import { Buffer } from 'buffer';
 
-const { UInt8, UInt16 } = Beson;
-
-let _unique_id = new UniqueId();
-console.log(_unique_id);
+const { UInt8, UInt16, Serialize } = Beson;
 
 
-let ecdh = createECDH('secp521r1'); 
-let publicKey = ecdh.generateKeys();
 
-//@Init
-let serializer = Serializer.init();
-//@profile
 
-    
+var current_date = (new Date()).valueOf().toString();
+var random = Math.random().toString();
+var sha1 = createHash('sha1').update(current_date + random).digest('hex');
 
-//@cert_ctnt
-serializer =  serializer
-                .write(UInt8.from(0)) 
-                .write(_unique_id ) //@uint8( 1) @iss_id ::= @unique-id
-				.write('US' ) //@uint8( 2) @iss_country_code ::= beson(@string)
-				.write('Texus' ) //@uint8( 3) @iss_state_code ::= beson(@string)
-				.write('Houston') //@uint8( 4) @iss_locality ::= beson(@string)
-				.write('SSL Corp') //@uint8( 5) @iss_org ::= beson(@string)
-                .write('SSL.com EV SSL Intermediate CA RSA R3') //@uint8( 6) @iss_common ::= beson(@string)
-            
-for(let i=7; i<20; i++){
-    serializer = serializer.write(UInt8.from(0)) 
+
+let ecdh = createECDH('secp384r1'); 
+ecdh.generateKeys();
+const privateKey = `-----BEGIN PRIVATE KEY-----\n${ecdh.getPrivateKey('base64').match(/.{1,64}/g).join('\n')}\n-----END PRIVATE KEY-----`;
+const publicKey = `-----BEGIN PUBLIC KEY-----\n${ecdh.getPublicKey('base64').match(/.{1,64}/g).join('\n')}\n-----END PUBLIC KEY-----`;
+
+
+var pem = fs.readFileSync('cheny_asus.pub');
+var key = pem.toString('ascii');
+
+var sign = createSign('RSA-SHA256');
+sign.write("This is the test document")
+sign.end();
+var signature = sign.sign(key, 'hex');
+
+
+const data = [
+	'3',
+	new UniqueId().toString('hex'),
+	Math.ceil(new Date().getTime()/1000),
+	Math.ceil(new Date().getTime()/1000),
+	new UniqueId().toString('hex'),
+	'US',
+	'Texas',
+	'Houston',
+	'SSL Corp',
+	'SSL.com EV SSL Intermediate CA RSA R3',
+	'US',
+	'Texas',
+	'Houston',
+	'SSL Corp',
+	new UniqueId().toString('hex'),
+	'SSL.com EV SSL Intermediate CA RSA R3',
+	'999999',
+	'Private Organization',
+	'3100 Richmond Ave',
+	'Nevada',
+	'US',
+	'EC Encryption',
+	256,
+	sha1,
+	publicKey,
+	'1.2.840.113549.1.1.11',
+	signature
+]
+
+
+// console.log(data);
+let obj = {}
+data.forEach((elm, index) => {
+	obj[index] = elm;
+})
+
+let serialize = Serialize(obj);
+console.log('serialize', serialize);
+
+
+
+function roughSizeOfObject( object ) {
+
+    var objectList = [];
+
+    var recurse = function( value )
+    {
+        var bytes = 0;
+
+        if ( typeof value === 'boolean' ) {
+            bytes = 1;
+        }
+        else if ( typeof value === 'string' ) {
+            bytes = value.length * 2;
+        }
+        else if ( typeof value === 'number' && value < 65536 ) {
+            bytes = 2;
+		}
+		else if ( typeof value === 'number' && value > 65536 ) {
+            bytes = 4;
+        }
+        else if
+        (
+            typeof value === 'object'
+            && objectList.indexOf( value ) === -1
+        )
+        {
+            objectList[ objectList.length ] = value;
+
+            for( let i in value ) {
+                bytes+= 8; // an assumed existence overhead
+                bytes+= recurse( value[i] )
+            }
+        }
+
+        return bytes;
+    }
+
+    return recurse( object );
 }
 
-serializer =  serializer
-                .write('US')  //@uint8(20) @subj_country_code ::= beson(@string)
-				.write('Texus') //@uint8(21) @subj_state_code ::= beson(@string)
-				.write('Houston') //@uint8(22) @subj_locality ::= beson(@string)
-				.write('SSL Corp') //@uint8(23) @subj_org ::= beson(@string)
-				.write('www.ssl.com') //@uint8(24) @subj_common ::= beson(@string)
-				.write(_unique_id) //@uint8(25) @subj_serial_number :: @unique-
-				.write('77098') //@uint8(26) @subj_postal_code ::= beson(@string)
-				.write('Private Organization') //@uint8(27) @subj_business_category ::= beson(@string)
-				.write('3100 Richmond Ave') //@uint8(28) @subj_street_address ::= beson(@string)
-				.write('Nevada') //@uint8(29) @subj_inc_state_code ::= beson(@string)
-                .write('US') //@uint8(30) @subj_inc_country_code ::= beson(@string)
-
-for(let i=31; i<197; i++){
-    serializer = serializer.write(UInt8.from(0)) 
-}
-
-serializer =  serializer
-				.write('EC Encryption')  //@uint8(197)@pk_info_algoithm ::= beson(@string)
-				.write(UInt16.from(256)) //@uint8(198)@pk_info_size ::= beson(@string)
-				.write(createHash('sha1').update('TLS').digest('hex')) //@uint8(199)@pk_info_SHA1_fingerprint ::= beson(@string)
-                .write(publicKey) //@uint8(200)@pk_info_public_Key ::= beson(@string)                       
-                
-for(let i=201; i<197; i++){
-    serializer = serializer.write(UInt8.from(0)) 
-}
-                console.log(serializer.buffer);
 
 
-                
+console.log(roughSizeOfObject(obj));
